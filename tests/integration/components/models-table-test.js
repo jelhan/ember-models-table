@@ -1167,3 +1167,29 @@ test('grouped headers', function (assert) {
   assert.equal(getEachAttrAsString(selectors.theadSecondRowCells, 'colspan', '|'), '2|3', '');
 
 });
+
+test('rowClickedAction is triggered', function(assert) {
+  assert.expect(4);
+
+  let expectedRecord;
+  let szenario;
+  let data = generateContent(10, 1);
+
+  this.setProperties({
+    columns: generateColumns(['index', 'someWord']),
+    data,
+    rowClickedAction(record) {
+      assert.ok(true, `rowClickedAction is triggered if ${szenario}`);
+      assert.equal(record, expectedRecord, `record is provided as first argument if ${szenario}`);
+    }
+  });
+  this.render(hbs`{{models-table columns=columns data=data rowClickedAction=rowClickedAction}}`);
+
+  szenario = 'user clicks on a row';
+  expectedRecord = data[2];
+  this.$('table tbody tr:eq(2)').click();
+
+  szenario = 'user clicks on a cell in a row';
+  expectedRecord = data[5];
+  this.$('table tbody tr:eq(5) td:first-child').click();
+});

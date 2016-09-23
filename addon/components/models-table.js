@@ -1261,6 +1261,10 @@ export default Component.extend({
     changeFilterString () {
       set(this, 'currentPageNumber', 1);
       this._sendDisplayDataChangedAction();
+    },
+
+    rowClicked(record) {
+      this.sendAction('rowClickedAction', record);
     }
 
   }
